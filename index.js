@@ -1,15 +1,15 @@
 require("dotenv").config();
 
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 
-app.use(express.json())
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
 app.get('/', (req,res) =>{
-    res.send('Hello, world!')
-})
+    res.send('Hello, world!');
+});
 
 app.get('/secret', (req, res) => {
   res.send(`
@@ -30,11 +30,12 @@ app.post('/secret', (req, res) => {
 
   if (!valid) {
     return res.status(401).send('Invalid credentials');
-  }
+  };
 
   res.send(process.env.SECRET_MESSAGE);
 });
 
-app.listen(3000, () => {
-    console.log("よ～")
-})
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log("よ～");
+});
