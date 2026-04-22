@@ -1,9 +1,10 @@
+require("dotenv").config();
+
 const express = require('express')
 const app = express()
-const bodyparser = require('body-parser')
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
-require("dotenv").config();
 
 
 app.get('/', (req,res) =>{
@@ -20,18 +21,19 @@ app.get('/secret', (req, res) => {
   `);
 });
 
-app.post('/secret', (req,res) => 
-{
-    const {name,pass} = req.body;
+app.post('/secret', (req, res) => {
+  const { name, pass } = req.body;
 
-    const user = name === process.env.USERNAME && pass === process.env.PASSWORD; 
+  const valid =
+    name === process.env.AUSERNAME &&
+    pass === process.env.APASSWORD;
 
-    if(!user){
-        return res.status(401).json({ message: 'Invalid credentials' });
-    }  
+  if (!valid) {
+    return res.status(401).send('Invalid credentials');
+  }
 
-    res.json({ message: process.env.SECRET_MESSAGE}); 
-})
+  res.send(process.env.SECRET_MESSAGE);
+});
 
 app.listen(3000, () => {
     console.log("よ～")
