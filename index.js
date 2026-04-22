@@ -1,28 +1,36 @@
 const express = require('express')
 const app = express()
-//const bodyparser = require('body-parser')
-//app.use(bodyParser.json());
+const bodyparser = require('body-parser')
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 require("dotenv").config();
+
 
 app.get('/', (req,res) =>{
     res.send('Hello, world!')
 })
 
-app.use(express.json())
+app.get('/secret', (req, res) => {
+  res.send(`
+    <form action="/secret" method="POST">
+      <input name="name" placeholder="username" />
+      <input name="pass" type="password" placeholder="password" />
+      <button type="submit">Login</button>
+    </form>
+  `);
+});
 
 app.post('/secret', (req,res) => 
 {
-    const {USERNAME,PASSWORD} = req.body;
+    const {name,pass} = req.body;
 
-    const user = USERNAME === process.env.USERNAME && PASSWORD === process.env.PASSWORD; 
+    const user = name === process.env.USERNAME && pass === process.env.PASSWORD; 
 
     if(!user){
-        //return res.status(401).json({ message: 'Invalid credentials' });
-        //res.send('wrong!');
+        return res.status(401).json({ message: 'Invalid credentials' });
     }  
 
     res.json({ message: process.env.SECRET_MESSAGE}); 
-    res.send(process.env.SECRET_MESSAGE);
 })
 
 app.listen(3000, () => {
