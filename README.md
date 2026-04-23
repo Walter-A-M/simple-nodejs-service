@@ -1,0 +1,1 @@
+A simple containerized Node.js service with an automated CI/CD pipeline. When changes are pushed to the repository, GitHub Actions builds a new Docker image, pushes it to Docker Hub, and deploys the updated image to a remote Linux server.
